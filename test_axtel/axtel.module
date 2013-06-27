@@ -1,0 +1,73 @@
+<?php
+
+
+
+function axtel_menu() {
+  $items['axtel_likes/ver_likes'] = array(
+    'title' => 'Ver Likes',
+    'page callback' => 'ver_likes_fb',
+    'access callback' => TRUE,
+  );
+
+
+   $items['admin/config/content/axtel'] = array(
+    'title' => 'Configurar likes face',
+    'description' => 'Configurar link para el like.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('axtel_configuracion'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'axtel.admin.inc',
+  );
+
+
+
+  return $items;
+}
+
+
+function ver_likes_fb() {
+  $url=variable_get('likes_fb');//"http://graph.facebook.com/axtel";
+  $json = file_get_contents($url);
+  $variables = json_decode( $json,true);
+  return theme('axtel_facebook', $variables);
+}
+
+
+
+
+
+
+function axtel_theme(){
+    
+ return array(
+    'axtel_facebook' => array(
+      'template' => 'axtel-likes',
+    ),
+  );   
+    
+}
+
+
+
+
+function axtel_block_info() {
+  $blocks['axtel_likes'] = array(
+    'info' => 'Likes de facebook',
+  );
+  return $blocks;
+}
+
+
+function axtel_block_view($delta = '') {
+  switch ($delta) {
+    case 'axtel':
+      $block['content'] = ver_likes_fb();
+      return $block;
+      break;
+  }
+  
+}
+
+
+
+

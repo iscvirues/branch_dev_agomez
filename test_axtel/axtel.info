@@ -1,0 +1,5 @@
+name = axtel
+description = Muestra un block para ver los likes de facebook.
+package = Axtel
+core = 7.x
+
